@@ -16,6 +16,7 @@ module.exports.Component = registerComponent('link', {
     href: {default: ''},
     image: {type: 'asset'},
     on: {default: 'click'},
+    navigateFn: { default: null },
     peekMode: {default: false},
     title: {default: ''},
     titleColor: {default: 'white', type: 'color'},
@@ -163,7 +164,13 @@ module.exports.Component = registerComponent('link', {
   },
 
   navigate: function () {
-    window.location = this.data.href;
+    // if user supplied a custom navigate function, use that
+    // else set window location to given href
+    if (typeof this.data.navigateFn === 'function') {
+      this.data.navigateFn(this.data.href);
+    } else {
+      window.location = this.data.href;
+    }
   },
 
   /**
@@ -368,3 +375,4 @@ registerShader('portal', {
   ].join('\n')
 });
 /* eslint-enable */
+
