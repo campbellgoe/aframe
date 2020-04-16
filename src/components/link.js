@@ -16,7 +16,6 @@ module.exports.Component = registerComponent('link', {
     href: { default: '' },
     image: { type: 'asset' },
     on: { default: 'click' },
-    navigate: { default: true },
     peekMode: { default: false },
     title: { default: '' },
     titleColor: { default: 'white', type: 'color' },
@@ -164,12 +163,11 @@ module.exports.Component = registerComponent('link', {
   },
 
   navigate: function () {
-    // if user has set navigate to false, it won't set window.location by default
-    // and they will need to supply their own navigation logic on some event.
-    // useful for SPAs which have custom navigation such as next/router or react-router-dom.
-    console.log('navigating... this.data.navigate is', this.data.navigate, 'and of type', typeof this.data.navigate);
-    if (this.data.navigate === true && this.data.href) {
-      console.log("setting window.location to '", this.data.href, "'");
+    // conditionally navigate if href exists, so the user can supply their own navigation logic
+    // otherwise it will just refresh the page entirely
+    // so the user can use 'title' instead of 'href' to render the link the same
+    // but it won't refresh the entire page, particularly useful for SPA routing
+    if (this.data.href) {
       window.location = this.data.href;
     }
   },
