@@ -69003,6 +69003,7 @@ module.exports.Component = registerComponent('link', {
     href: {default: ''},
     image: {type: 'asset'},
     on: {default: 'click'},
+    navigateFn: { default: null },
     peekMode: {default: false},
     title: {default: ''},
     titleColor: {default: 'white', type: 'color'},
@@ -69150,7 +69151,13 @@ module.exports.Component = registerComponent('link', {
   },
 
   navigate: function () {
-    window.location = this.data.href;
+    // if user supplied a custom navigate function, use that
+    // else set window location to given href
+    if (typeof this.data.navigateFn === 'function') {
+      this.data.navigateFn(this.data.href);
+    } else {
+      window.location = this.data.href;
+    }
   },
 
   /**
@@ -81138,7 +81145,7 @@ _dereq_('./core/a-mixin');
 _dereq_('./extras/components/');
 _dereq_('./extras/primitives/');
 
-console.log('A-Frame Version: 1.0.4 (Date 2020-04-10, Commit #bd3cabe4)');
+console.log('A-Frame Version: 1.0.4 (Date 2020-04-16, Commit #aa187bc7)');
 console.log('THREE Version (https://github.com/supermedium/three.js):',
             pkg.dependencies['super-three']);
 console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
