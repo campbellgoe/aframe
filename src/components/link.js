@@ -9,18 +9,18 @@ var THREE = require('../lib/three');
  */
 module.exports.Component = registerComponent('link', {
   schema: {
-    backgroundColor: {default: 'red', type: 'color'},
-    borderColor: {default: 'white', type: 'color'},
-    highlighted: {default: false},
-    highlightedColor: {default: '#24CAFF', type: 'color'},
-    href: {default: ''},
-    image: {type: 'asset'},
-    on: {default: 'click'},
-    navigate: {default: true},
-    peekMode: {default: false},
-    title: {default: ''},
-    titleColor: {default: 'white', type: 'color'},
-    visualAspectEnabled: {default: false}
+    backgroundColor: { default: 'red', type: 'color' },
+    borderColor: { default: 'white', type: 'color' },
+    highlighted: { default: false },
+    highlightedColor: { default: '#24CAFF', type: 'color' },
+    href: { default: '' },
+    image: { type: 'asset' },
+    on: { default: 'click' },
+    navigate: { default: true },
+    peekMode: { default: false },
+    title: { default: '' },
+    titleColor: { default: 'white', type: 'color' },
+    visualAspectEnabled: { default: false }
   },
 
   init: function () {
@@ -49,12 +49,12 @@ module.exports.Component = registerComponent('link', {
     if (data.on !== oldData.on) { this.updateEventListener(); }
 
     if (oldData.peekMode !== undefined &&
-        data.peekMode !== oldData.peekMode) { this.updatePeekMode(); }
+      data.peekMode !== oldData.peekMode) { this.updatePeekMode(); }
 
     if (!data.image || oldData.image === data.image) { return; }
 
     el.setAttribute('material', 'pano',
-                    typeof data.image === 'string' ? data.image : data.image.src);
+      typeof data.image === 'string' ? data.image : data.image.src);
   },
 
   /*
@@ -108,8 +108,8 @@ module.exports.Component = registerComponent('link', {
     semiSphereEl = this.semiSphereEl = this.semiSphereEl || document.createElement('a-entity');
 
     // Set portal.
-    el.setAttribute('geometry', {primitive: 'circle', radius: 1.0, segments: 64});
-    el.setAttribute('material', {shader: 'portal', pano: this.data.image, side: 'double'});
+    el.setAttribute('geometry', { primitive: 'circle', radius: 1.0, segments: 64 });
+    el.setAttribute('material', { shader: 'portal', pano: this.data.image, side: 'double' });
 
     // Set text that displays the link title and URL.
     textEl.setAttribute('text', {
@@ -167,7 +167,9 @@ module.exports.Component = registerComponent('link', {
     // if user has set navigate to false, it won't set window.location by default
     // and they will need to supply their own navigation logic on some event.
     // useful for SPAs which have custom navigation such as next/router or react-router-dom.
-    if (this.data.navigate === true) {
+    console.log('navigating... this.data.navigate is', this.data.navigate, 'and of type', typeof this.data.navigate);
+    if (this.data.navigate === true && this.data.href) {
+      console.log("setting window.location to '", this.data.href, "'");
       window.location = this.data.href;
     }
   },
@@ -263,9 +265,9 @@ module.exports.Component = registerComponent('link', {
     el.sceneEl.object3D.traverse(function (object) {
       if (object && object.el && object.el.hasAttribute('link-controls')) { return; }
       if (!object.el || object === el.sceneEl.object3D || object.el === el ||
-          object.el === self.sphereEl || object.el === el.sceneEl.cameraEl ||
-          object.el.getAttribute('visible') === false || object.el === self.textEl ||
-          object.el === self.semiSphereEl) {
+        object.el === self.sphereEl || object.el === el.sceneEl.cameraEl ||
+        object.el.getAttribute('visible') === false || object.el === self.textEl ||
+        object.el === self.semiSphereEl) {
         return;
       }
       object.el.setAttribute('visible', false);
@@ -330,10 +332,10 @@ module.exports.Component = registerComponent('link', {
 /* eslint-disable */
 registerShader('portal', {
   schema: {
-    borderEnabled: {default: 1.0, type: 'int', is: 'uniform'},
-    backgroundColor: {default: 'red', type: 'color', is: 'uniform'},
-    pano: {type: 'map', is: 'uniform'},
-    strokeColor: {default: 'white', type: 'color', is: 'uniform'}
+    borderEnabled: { default: 1.0, type: 'int', is: 'uniform' },
+    backgroundColor: { default: 'red', type: 'color', is: 'uniform' },
+    pano: { type: 'map', is: 'uniform' },
+    strokeColor: { default: 'white', type: 'color', is: 'uniform' }
   },
 
   vertexShader: [
