@@ -69003,7 +69003,7 @@ module.exports.Component = registerComponent('link', {
     href: {default: ''},
     image: {type: 'asset'},
     on: {default: 'click'},
-    navigateFn: { default: null },
+    navigate: {default: true},
     peekMode: {default: false},
     title: {default: ''},
     titleColor: {default: 'white', type: 'color'},
@@ -69151,11 +69151,10 @@ module.exports.Component = registerComponent('link', {
   },
 
   navigate: function () {
-    // if user supplied a custom navigate function, use that
-    // else set window location to given href
-    if (typeof this.data.navigateFn === 'function') {
-      this.data.navigateFn(this.data.href);
-    } else {
+    // if user has set navigate to false, it won't set window.location by default
+    // and they will need to supply their own navigation logic on some event.
+    // useful for SPAs which have custom navigation such as next/router or react-router-dom.
+    if (this.data.navigate === true) {
       window.location = this.data.href;
     }
   },
@@ -81145,7 +81144,7 @@ _dereq_('./core/a-mixin');
 _dereq_('./extras/components/');
 _dereq_('./extras/primitives/');
 
-console.log('A-Frame Version: 1.0.4 (Date 2020-04-16, Commit #aa187bc7)');
+console.log('A-Frame Version: 1.0.4 (Date 2020-04-16, Commit #6d299b2d)');
 console.log('THREE Version (https://github.com/supermedium/three.js):',
             pkg.dependencies['super-three']);
 console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
