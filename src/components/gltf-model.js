@@ -32,7 +32,9 @@ module.exports.Component = registerComponent('gltf-model', {
       self.model.animations = gltfModel.animations;
       el.setObject3D('mesh', self.model);
       el.emit('model-loaded', {format: 'gltf', model: self.model});
-    }, undefined /* onProgress */, function gltfFailed (error) {
+    }, function onProgress (progress) {
+      el.emit('model-load-progress', {format: 'gltf', src: src, progress});
+    }, function gltfFailed (error) {
       var message = (error && error.message) ? error.message : 'Failed to load glTF model';
       warn(message);
       el.emit('model-error', {format: 'gltf', src: src});
